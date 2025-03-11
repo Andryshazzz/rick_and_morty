@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'content_card_dto.dart';
+part of 'character_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ContentCardDto _$ContentCardDtoFromJson(Map<String, dynamic> json) =>
-    ContentCardDto(
+CharacterDto _$CharacterDtoFromJson(Map<String, dynamic> json) => CharacterDto(
       imageUrl: json['image'] as String,
       name: json['name'] as String,
       status: json['status'] as String?,
@@ -15,7 +14,7 @@ ContentCardDto _$ContentCardDtoFromJson(Map<String, dynamic> json) =>
       gender: json['gender'] as String?,
     );
 
-Map<String, dynamic> _$ContentCardDtoToJson(ContentCardDto instance) =>
+Map<String, dynamic> _$CharacterDtoToJson(CharacterDto instance) =>
     <String, dynamic>{
       'image': instance.imageUrl,
       'name': instance.name,

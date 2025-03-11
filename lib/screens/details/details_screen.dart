@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/entities/content_dart_entities.dart';
+import '../../entities/character.dart';
 
-class HomeDetail extends StatelessWidget {
-  final ContentCardEntities data;
+class DetailScreen extends StatelessWidget {
+  final CharacterEntities data;
 
-  const HomeDetail({
+  const DetailScreen({
     super.key,
     required this.data,
   });
@@ -27,7 +27,7 @@ class HomeDetail extends StatelessWidget {
 /////////////////////////////////////Header_Widget//////////////////////////////////////////////
 
 class _HeaderWidget extends StatelessWidget {
-  final ContentCardEntities data;
+  final CharacterEntities data;
 
   const _HeaderWidget({
     required this.data,
@@ -72,7 +72,7 @@ class _HeaderWidget extends StatelessWidget {
 /////////////////////////////////////Detail_Widget//////////////////////////////////////////////
 
 class _DetailInfo extends StatelessWidget {
-  final ContentCardEntities data;
+  final CharacterEntities data;
 
   const _DetailInfo({
     required this.data,

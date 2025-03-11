@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
 
-import '../entities/content_dart_entities.dart';
-import 'content.dart';
+import '../data/api/content.dart';
+import '../entities/character.dart';
 
-class ApiClient {
-  final dio = Dio();
+class CharacterRepository {
+  final Dio dio;
 
-  Future<List<ContentCardEntities>> getContent() async {
+  CharacterRepository({required this.dio});
+
+  Future<List<CharacterEntities>> getContent() async {
     try {
       final response =
           await dio.get('https://rickandmortyapi.com/api/character');

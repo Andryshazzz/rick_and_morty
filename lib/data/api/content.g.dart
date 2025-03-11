@@ -8,7 +8,7 @@ part of 'content.dart';
 
 Content _$ContentFromJson(Map<String, dynamic> json) => Content(
       results: (json['results'] as List<dynamic>)
-          .map((e) => ContentCardDto.fromJson(e as Map<String, dynamic>))
+          .map((e) => CharacterDto.fromJson(e as Map<String, dynamic>))
           .toList(),
       info: json['info'] as Map<String, dynamic>,
     );

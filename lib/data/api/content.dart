@@ -1,12 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'content_card_dto.dart';
+import 'character_dto.dart';
 
 part 'content.g.dart';
 
 @JsonSerializable()
 class Content {
-  final List<ContentCardDto> results;
+  final List<CharacterDto> results;
   final Map<String, dynamic> info;
 
   Content({

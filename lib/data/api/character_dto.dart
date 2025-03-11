@@ -1,10 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../entities/content_dart_entities.dart';
 
-part 'content_card_dto.g.dart';
+import '../../entities/character.dart';
+
+part 'character_dto.g.dart';
 
 @JsonSerializable()
-class ContentCardDto {
+class CharacterDto {
   @JsonKey(name: 'image')
   final String imageUrl;
 
@@ -20,7 +21,7 @@ class ContentCardDto {
   @JsonKey(name: 'gender')
   final String? gender;
 
-  ContentCardDto({
+  CharacterDto({
     required this.imageUrl,
     required this.name,
     this.status,
@@ -28,8 +29,8 @@ class ContentCardDto {
     this.gender,
   });
 
-  ContentCardEntities toEntity() {
-    return ContentCardEntities(
+  CharacterEntities toEntity() {
+    return CharacterEntities(
       imageUrl: imageUrl,
       name: name,
       status: status,
@@ -38,6 +39,6 @@ class ContentCardDto {
     );
   }
 
-  factory ContentCardDto.fromJson(Map<String, Object?> json) =>
-      _$ContentCardDtoFromJson(json);
+  factory CharacterDto.fromJson(Map<String, Object?> json) =>
+      _$CharacterDtoFromJson(json);
 }

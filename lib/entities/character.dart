@@ -1,11 +1,11 @@
-class ContentCardEntities {
+class CharacterEntities {
   final String imageUrl;
   final String name;
   final String? status;
   final String? species;
   final String? gender;
 
-  const ContentCardEntities({
+  const CharacterEntities({
     required this.imageUrl,
     required this.name,
     required this.status,

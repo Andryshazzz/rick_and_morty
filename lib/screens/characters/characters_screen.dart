@@ -3,18 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 
-import '../../../core/entities/content_dart_entities.dart';
-import '../logic/home_bloc.dart';
-import 'home_detail.dart';
+import '../../entities/character.dart';
+import 'characters_bloc.dart';
+import '../details/details_screen.dart';
 
-class HomeContent extends StatefulWidget {
-  const HomeContent({super.key});
+class CharactersScreen extends StatefulWidget {
+  const CharactersScreen({super.key});
 
   @override
-  State<HomeContent> createState() => _HomeContentState();
+  State<CharactersScreen> createState() => _CharactersScreen();
 }
 
-class _HomeContentState extends State<HomeContent> {
+class _CharactersScreen extends State<CharactersScreen> {
   @override
   void initState() {
     context.read<HomeBloc>().add(LoadData());
@@ -67,7 +67,7 @@ class _HomeContentState extends State<HomeContent> {
 
 class ContentCard extends StatefulWidget {
   final int index;
-  final List<ContentCardEntities> data;
+  final List<CharacterEntities> data;
 
   const ContentCard({
     super.key,
@@ -104,7 +104,7 @@ class _ContentCardState extends State<ContentCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeDetail(
+            builder: (context) => DetailScreen(
               data: widget.data[widget.index],
             ),
           ),
