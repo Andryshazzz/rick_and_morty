@@ -8,11 +8,11 @@ part 'characters_event.dart';
 part 'characters_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final CharacterRepository _characterRepository;
+  final CharacterRepository repository;
 
-  HomeBloc({required CharacterRepository characterRepository})
-      : _characterRepository = characterRepository,
-        super(Initial()) {
+  HomeBloc({
+    required this.repository,
+  }) : super(Initial()) {
     on<LoadData>(_onLoadAnime);
   }
 
@@ -20,7 +20,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     LoadData event,
     Emitter<HomeState> emit,
   ) async {
-    final content = await _characterRepository.getContent();
+    final content = await repository.getContent();
     emit(Loaded(content: content));
   }
 }

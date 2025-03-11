@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
+import 'package:rick_and_morty/data/api/api_client.dart';
+import 'package:rick_and_morty/repos/characters_repo.dart';
 
 import '../../entities/character.dart';
 import 'characters_bloc.dart';
 import '../details/details_screen.dart';
 
 class CharactersScreen extends StatefulWidget {
-  const CharactersScreen({super.key});
+  const CharactersScreen({
+    super.key,
+  });
 
   @override
   State<CharactersScreen> createState() => _CharactersScreen();
