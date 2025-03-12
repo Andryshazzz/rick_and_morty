@@ -1,20 +1,34 @@
 import 'package:dio/dio.dart';
-import '../../entities/character.dart';
-import 'content.dart';
 
 class ApiClient {
-  final Dio dio = Dio();
+  final _dio = Dio();
 
-  Future<List<CharacterEntities>> getContent() async {
-    try {
-      final response =
-          await dio.get('https://rickandmortyapi.com/api/character');
-      final json = response.data as Map<String, dynamic>;
-      final data = Content.fromJson(json);
-      final content = data.results.map((e) => e.toEntity()).toList();
-      return content;
-    } catch (e) {
-      rethrow;
-    }
+  ApiClient() {
+    _initDio();
+  }
+
+  _initDio() async {
+    String apiUrl = 'https://rickandmortyapi.com/api';
+
+    _dio.options
+      ..baseUrl = apiUrl
+      ..connectTimeout = const Duration(seconds: 30)
+      ..receiveTimeout = const Duration(seconds: 60)
+      ..sendTimeout = const Duration(seconds: 30);
+  }
+
+  Future<Response<T>> get<T>(
+    String url, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? receiveTimeout,
+  }) async {
+    final response = await _dio.get<T>(
+      url,
+      queryParameters: query,
+      options: Options(headers: headers, receiveTimeout: receiveTimeout),
+    );
+
+    return response;
   }
 }

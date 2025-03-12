@@ -1,15 +1,15 @@
 part of 'characters_bloc.dart';
 
-abstract class HomeState {}
+abstract class CharactersState {}
 
-class Initial extends HomeState {}
+class CharactersInitial extends CharactersState {}
 
-class Loading extends HomeState {}
+class CharactersLoading extends CharactersState {}
 
-class Loaded extends HomeState {
-  final List<CharacterEntities> content;
+class CharactersLoaded extends CharactersState {
+  final List<Character> character;
 
-  Loaded({required this.content});
+  CharactersLoaded({required this.character});
 }
 
-class Error extends HomeState {}
+class CharactersError extends CharactersState {}

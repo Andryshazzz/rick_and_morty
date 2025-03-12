@@ -1,13 +1,21 @@
 import 'package:rick_and_morty/data/api/api_client.dart';
 
-import '../entities/character.dart';
+import '../data/api/characters_response.dart';
+import '../models/characters_details.dart';
 
 class CharacterRepository {
-  final ApiClient apiClient;
+  final apiClient = ApiClient();
 
-  CharacterRepository({required this.apiClient});
+  Future<List<Character>> getCharacters() async {
+    final request = await apiClient.get('/character');
+    final response = CharactersResponse.fromJson(request.data).results.toList();
+    return response;
+  }
 
-  Future<List<CharacterEntities>> getContent() async {
-    return await apiClient.getContent();
+  Future<Character> getCharactersDetails(int characterId) async {
+    final request =
+        await apiClient.get('/character', query: {'characterId': characterId});
+    final response = Character.fromJson(request.data);
+    return response;
   }
 }

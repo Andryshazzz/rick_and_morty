@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive/hive.dart';
-import 'package:rick_and_morty/data/api/api_client.dart';
-import 'package:rick_and_morty/repos/characters_repo.dart';
-
-import '../../entities/character.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../models/characters_details.dart';
+import '../../repos/characters_repo.dart';
 import 'characters_bloc.dart';
 import '../details/details_screen.dart';
 
-class CharactersScreen extends StatefulWidget {
-  const CharactersScreen({
-    super.key,
-  });
+class CharactersScreen extends StatelessWidget {
+  const CharactersScreen({super.key});
 
   @override
-  State<CharactersScreen> createState() => _CharactersScreen();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          CharactersBloc(repository: context.read<CharacterRepository>()),
+      child: _CharactersScreen(),
+    );
+  }
 }
 
-class _CharactersScreen extends State<CharactersScreen> {
+class _CharactersScreen extends StatefulWidget {
+  const _CharactersScreen({super.key});
+
+  @override
+  State<_CharactersScreen> createState() => _CharactersScreenState();
+}
+
+class _CharactersScreenState extends State<_CharactersScreen> {
   @override
   void initState() {
-    context.read<HomeBloc>().add(LoadData());
+    context.read<CharactersBloc>().add(CharactersLoadData());
     super.initState();
   }
 
@@ -32,9 +41,9 @@ class _CharactersScreen extends State<CharactersScreen> {
         preferredSize: Size.fromHeight(0),
         child: AppBar(),
       ),
-      body: BlocBuilder<HomeBloc, HomeState>(
+      body: BlocBuilder<CharactersBloc, CharactersState>(
         builder: (context, state) {
-          if (state is Loaded) {
+          if (state is CharactersLoaded) {
             return CustomScrollView(
               slivers: [
                 SliverPadding(
@@ -42,7 +51,7 @@ class _CharactersScreen extends State<CharactersScreen> {
                   sliver: SliverGrid(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) => ContentCard(
-                        data: state.content,
+                        data: state.character,
                         index: index,
                       ),
                       childCount: 6,
@@ -58,7 +67,7 @@ class _CharactersScreen extends State<CharactersScreen> {
                 ),
               ],
             );
-          } else if (state is Initial) {
+          } else if (state is CharactersInitial) {
             return const Center(child: CircularProgressIndicator());
           } else {
             return const Text('ой-ой');
@@ -71,7 +80,7 @@ class _CharactersScreen extends State<CharactersScreen> {
 
 class ContentCard extends StatefulWidget {
   final int index;
-  final List<CharacterEntities> data;
+  final List<Character> data;
 
   const ContentCard({
     super.key,
@@ -84,19 +93,25 @@ class ContentCard extends StatefulWidget {
 }
 
 class _ContentCardState extends State<ContentCard> {
-  late Box likesBox;
+  bool isLiked = false;
 
   @override
   void initState() {
-    likesBox = Hive.box('likesBox');
+    _loadLikeStatus();
     super.initState();
   }
 
-  bool get isLiked =>
-      likesBox.get('liked_${widget.index}', defaultValue: false);
+  Future<void> _loadLikeStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isLiked = prefs.getBool('liked_${widget.index}') ?? false;
+    });
+  }
 
-  void toggleLike() {
-    likesBox.put('liked_${widget.index}', !isLiked);
+  Future<void> toggleLike() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isLiked = !isLiked;
+    await prefs.setBool('liked_${widget.index}', isLiked);
     setState(() {});
   }
 
@@ -108,8 +123,8 @@ class _ContentCardState extends State<ContentCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailScreen(
-              data: widget.data[widget.index],
+            builder: (context) => CharactersDetailsScreenProvider(
+              characterId: widget.data[widget.index].id,
             ),
           ),
         );
@@ -127,7 +142,8 @@ class _ContentCardState extends State<ContentCard> {
                 Stack(
                   alignment: Alignment.topRight,
                   children: [
-                    Image.network(widget.data[widget.index].imageUrl),
+                    Image.network(widget.data[widget.index].image ??
+                        'https://i.pinimg.com/736x/85/08/0a/85080afc4cba3d34e2846e435fe3d802.jpg'),
                     IconButton(
                       onPressed: toggleLike,
                       icon: Container(
@@ -138,8 +154,8 @@ class _ContentCardState extends State<ContentCard> {
                           ),
                           child: SvgPicture.asset(
                             isLiked
-                                ? 'assets/icons/unliked.svg'
-                                : 'assets/icons/liked.svg',
+                                ? 'assets/icons/liked.svg'
+                                : 'assets/icons/unliked.svg',
                           )),
                     )
                   ],
@@ -147,7 +163,7 @@ class _ContentCardState extends State<ContentCard> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
-                    widget.data[widget.index].name,
+                    widget.data[widget.index].name ?? 'Не найдено',
                     style: TextStyle(
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.w700,

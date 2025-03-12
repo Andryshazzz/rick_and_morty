@@ -1,5 +1,5 @@
 part of 'characters_bloc.dart';
 
-abstract class HomeEvent {}
+abstract class CharactersEvent {}
 
-class LoadData extends HomeEvent {}
+class CharactersLoadData extends CharactersEvent {}

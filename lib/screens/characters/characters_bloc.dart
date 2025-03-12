@@ -1,26 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../entities/character.dart';
-import '../../data/api/api_client.dart';
+import '../../models/characters_details.dart';
 import '../../repos/characters_repo.dart';
 
 part 'characters_event.dart';
 
 part 'characters_state.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
+class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
   final CharacterRepository repository;
 
-  HomeBloc({
+  CharactersBloc({
     required this.repository,
-  }) : super(Initial()) {
-    on<LoadData>(_onLoadAnime);
+  }) : super(CharactersInitial()) {
+    on<CharactersLoadData>(_onLoadCharacter);
   }
 
-  Future<void> _onLoadAnime(
-    LoadData event,
-    Emitter<HomeState> emit,
+  Future<void> _onLoadCharacter(
+      CharactersLoadData event,
+    Emitter<CharactersState> emit,
   ) async {
-    final content = await repository.getContent();
-    emit(Loaded(content: content));
+    final characters = await repository.getCharacters();
+    emit(CharactersLoaded(character: characters));
   }
 }
