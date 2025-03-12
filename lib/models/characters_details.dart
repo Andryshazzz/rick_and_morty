@@ -4,11 +4,11 @@ part 'characters_details.g.dart';
 
 @JsonSerializable()
 class Character {
-  final String? image;
-  final String? name;
-  final String? status;
-  final String? species;
-  final String? gender;
+  final String image;
+  final String name;
+  final String status;
+  final String species;
+  final String gender;
   final int id;
 
   const Character({

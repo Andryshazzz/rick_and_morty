@@ -21,7 +21,7 @@ class CharactersScreen extends StatelessWidget {
 }
 
 class _CharactersScreen extends StatefulWidget {
-  const _CharactersScreen({super.key});
+  const _CharactersScreen();
 
   @override
   State<_CharactersScreen> createState() => _CharactersScreenState();
@@ -54,7 +54,7 @@ class _CharactersScreenState extends State<_CharactersScreen> {
                         data: state.character,
                         index: index,
                       ),
-                      childCount: 6,
+                      childCount: 8,
                     ),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -123,7 +123,7 @@ class _ContentCardState extends State<ContentCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CharactersDetailsScreenProvider(
+            builder: (context) => CharactersDetailsScreen(
               characterId: widget.data[widget.index].id,
             ),
           ),
@@ -142,8 +142,7 @@ class _ContentCardState extends State<ContentCard> {
                 Stack(
                   alignment: Alignment.topRight,
                   children: [
-                    Image.network(widget.data[widget.index].image ??
-                        'https://i.pinimg.com/736x/85/08/0a/85080afc4cba3d34e2846e435fe3d802.jpg'),
+                    Image.network(widget.data[widget.index].image),
                     IconButton(
                       onPressed: toggleLike,
                       icon: Container(
@@ -163,7 +162,7 @@ class _ContentCardState extends State<ContentCard> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
-                    widget.data[widget.index].name ?? 'Не найдено',
+                    widget.data[widget.index].name,
                     style: TextStyle(
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.w700,

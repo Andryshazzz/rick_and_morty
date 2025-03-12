@@ -14,7 +14,7 @@ class CharacterRepository {
 
   Future<Character> getCharactersDetails(int characterId) async {
     final request =
-        await apiClient.get('/character', query: {'characterId': characterId});
+        await apiClient.get('/character/$characterId');
     final response = Character.fromJson(request.data);
     return response;
   }

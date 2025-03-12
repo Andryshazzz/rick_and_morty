@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../models/characters_details.dart';
 import '../../repos/characters_repo.dart';
 import 'details_bloc.dart';
 
-class CharactersDetailsScreenProvider extends StatelessWidget {
+class CharactersDetailsScreen extends StatelessWidget {
   final int characterId;
 
-  const CharactersDetailsScreenProvider({
+  const CharactersDetailsScreen({
     super.key,
     required this.characterId,
   });
@@ -18,25 +19,24 @@ class CharactersDetailsScreenProvider extends StatelessWidget {
     final repository = context.read<CharacterRepository>();
     return BlocProvider<CharactersDetailsBloc>(
       create: (context) => CharactersDetailsBloc(repository: repository),
-      child: CharactersDetailsScreen(characterId: characterId),
+      child: _CharactersDetailsScreen(characterId: characterId),
     );
   }
 }
 
-class CharactersDetailsScreen extends StatefulWidget {
+class _CharactersDetailsScreen extends StatefulWidget {
   final int characterId;
 
-  const CharactersDetailsScreen({
-    super.key,
+  const _CharactersDetailsScreen({
     required this.characterId,
   });
 
   @override
-  State<CharactersDetailsScreen> createState() =>
+  State<_CharactersDetailsScreen> createState() =>
       _CharactersDetailsScreenState();
 }
 
-class _CharactersDetailsScreenState extends State<CharactersDetailsScreen> {
+class _CharactersDetailsScreenState extends State<_CharactersDetailsScreen> {
   @override
   void initState() {
     context
@@ -86,8 +86,7 @@ class _HeaderWidget extends StatelessWidget {
           width: double.infinity,
           height: 260,
           child: Image.network(
-            data.image ??
-                'https://i.pinimg.com/736x/85/08/0a/85080afc4cba3d34e2846e435fe3d802.jpg',
+            data.image,
             fit: BoxFit.fill,
           ),
         ),
@@ -104,9 +103,7 @@ class _HeaderWidget extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(50),
               ),
-              child: Icon(
-                Icons.arrow_back,
-              ),
+              child: SvgPicture.asset('assets/icons/arrow-left.svg'),
             ),
           ),
         )
@@ -124,36 +121,55 @@ class _DetailInfo extends StatelessWidget {
     required this.data,
   });
 
+  Widget _getStatusIcon(Status status) {
+    switch (status) {
+      case Status.alive:
+        return SvgPicture.asset(
+          'assets/icons/alive.svg',
+          color: const Color(0xFFF8F8F8),
+        );
+      case Status.dead:
+        return SvgPicture.asset(
+          'assets/icons/dead.svg',
+          color: const Color(0xFFF8F8F8),
+        );
+      case Status.unknown:
+        return SvgPicture.asset(
+          'assets/icons/unknown.svg',
+          color: const Color(0xFFF8F8F8),
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         _RowWidget(
-          icon: Icon(
-            Icons.arrow_back,
+          icon: SvgPicture.asset(
+            'assets/icons/information.svg',
+            color: Color(0xFFF8F8F8),
           ),
           subTitle: 'Name',
-          mainTitle: data.name ?? 'не найдено',
+          mainTitle: data.name,
         ),
         _RowWidget(
-          icon: Icon(
-            Icons.arrow_back,
-          ),
+          icon: _getStatusIcon(Status.fromString(data.status)),
           subTitle: 'Status',
-          mainTitle: data.status ?? 'не найдено',
+          mainTitle: data.status,
         ),
         _RowWidget(
             icon: Icon(
               Icons.arrow_back,
             ),
             subTitle: 'Species',
-            mainTitle: data.species ?? 'не найдено'),
+            mainTitle: data.species),
         _RowWidget(
           icon: Icon(
             Icons.arrow_back,
           ),
           subTitle: 'Gender',
-          mainTitle: data.gender ?? 'не найдено',
+          mainTitle: data.gender,
         ),
       ],
     );
@@ -210,5 +226,24 @@ class _RowWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+enum Status {
+  alive,
+  dead,
+  unknown;
+
+  static Status fromString(String status) {
+    switch (status.toLowerCase()) {
+      case 'alive':
+        return Status.alive;
+      case 'dead':
+        return Status.dead;
+      case 'unknown':
+        return Status.unknown;
+      default:
+        throw ArgumentError('Unknown status: $status');
+    }
   }
 }
