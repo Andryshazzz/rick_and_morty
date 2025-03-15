@@ -1,15 +1,21 @@
-part of 'details_bloc.dart';
+import '../../models/characters_details.dart';
 
-abstract class CharactersDetailsState {}
+class CharactersDetailsState {
+  final bool isLoading;
+  final Character? character;
 
-class CharactersDetailsInitial extends CharactersDetailsState {}
+  CharactersDetailsState({
+    this.isLoading = true,
+    this.character,
+  });
 
-class CharactersDetailsLoading extends CharactersDetailsState {}
-
-class CharactersDetailsLoaded extends CharactersDetailsState {
-  final Character character;
-
-  CharactersDetailsLoaded({required this.character});
+  CharactersDetailsState copyWith({
+    bool? isLoadig,
+    Character? character,
+  }) {
+    return CharactersDetailsState(
+      isLoading: isLoadig ?? this.isLoading,
+      character: character ?? this.character,
+    );
+  }
 }
-
-class CharactersDetailsError extends CharactersDetailsState {}

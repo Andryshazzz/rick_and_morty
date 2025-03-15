@@ -1,11 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../models/characters_details.dart';
 import '../../repos/characters_repo.dart';
-
-part 'details_event.dart';
-
-part 'details_state.dart';
+import 'details_event.dart';
+import 'details_state.dart';
 
 class CharactersDetailsBloc
     extends Bloc<CharactersDetailsEvent, CharactersDetailsState> {
@@ -13,7 +9,7 @@ class CharactersDetailsBloc
 
   CharactersDetailsBloc({
     required this.repository,
-  }) : super(CharactersDetailsInitial()) {
+  }) : super(CharactersDetailsState()) {
     on<CharactersDetailsLoadData>(_onLoadCharacterDetails);
   }
 
@@ -21,7 +17,10 @@ class CharactersDetailsBloc
     CharactersDetailsLoadData event,
     Emitter<CharactersDetailsState> emit,
   ) async {
-    final characters = await repository.getCharactersDetails(event.characterId);
-    emit(CharactersDetailsLoaded(character: characters));
+    final character = await repository.getCharactersDetails(event.characterId);
+    emit(state.copyWith(
+      character: character,
+      isLoadig: false,
+    ));
   }
 }

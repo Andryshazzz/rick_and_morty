@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/characters_details.dart';
 import '../../repos/characters_repo.dart';
 import 'characters_bloc.dart';
 import '../details/details_screen.dart';
+import 'characters_event.dart';
+import 'characters_state.dart';
 
 class CharactersScreen extends StatelessWidget {
   const CharactersScreen({super.key});
@@ -13,26 +14,18 @@ class CharactersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          CharactersBloc(repository: context.read<CharacterRepository>()),
-      child: _CharactersScreen(),
+      create: (context) {
+        final repository = context.read<CharacterRepository>();
+        return CharactersBloc(repository: repository)
+          ..add(CharactersLoadData());
+      },
+      child: const _CharactersScreen(),
     );
   }
 }
 
-class _CharactersScreen extends StatefulWidget {
+class _CharactersScreen extends StatelessWidget {
   const _CharactersScreen();
-
-  @override
-  State<_CharactersScreen> createState() => _CharactersScreenState();
-}
-
-class _CharactersScreenState extends State<_CharactersScreen> {
-  @override
-  void initState() {
-    context.read<CharactersBloc>().add(CharactersLoadData());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,138 +36,132 @@ class _CharactersScreenState extends State<_CharactersScreen> {
       ),
       body: BlocBuilder<CharactersBloc, CharactersState>(
         builder: (context, state) {
-          if (state is CharactersLoaded) {
-            return CustomScrollView(
-              slivers: [
-                SliverPadding(
-                  padding: EdgeInsets.all(20),
-                  sliver: SliverGrid(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) => ContentCard(
-                        data: state.character,
-                        index: index,
-                      ),
-                      childCount: 8,
-                    ),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 20,
-                      mainAxisExtent: 215,
-                    ),
-                  ),
-                ),
-              ],
-            );
-          } else if (state is CharactersInitial) {
+          if (state.isLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else {
+          }
+          if (state.characters.isEmpty) {
             return const Text('ой-ой');
           }
+          return _CharactersList(characters: state.characters);
         },
       ),
     );
   }
 }
 
-class ContentCard extends StatefulWidget {
-  final int index;
-  final List<Character> data;
+class _CharactersList extends StatelessWidget {
+  final List<Character> characters;
 
-  const ContentCard({
-    super.key,
-    required this.data,
-    required this.index,
+  const _CharactersList({
+    required this.characters,
   });
 
   @override
-  State<ContentCard> createState() => _ContentCardState();
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: EdgeInsets.all(20),
+          sliver: SliverGrid(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => CharacterCard(
+                character: characters[index],
+              ),
+              childCount: 8,
+            ),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 20,
+              mainAxisExtent: 215,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-class _ContentCardState extends State<ContentCard> {
-  bool isLiked = false;
+class CharacterCard extends StatelessWidget {
+  final Character character;
 
-  @override
-  void initState() {
-    _loadLikeStatus();
-    super.initState();
-  }
-
-  Future<void> _loadLikeStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      isLiked = prefs.getBool('liked_${widget.index}') ?? false;
-    });
-  }
-
-  Future<void> toggleLike() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    isLiked = !isLiked;
-    await prefs.setBool('liked_${widget.index}', isLiked);
-    setState(() {});
-  }
+  const CharacterCard({
+    super.key,
+    required this.character,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: const BorderRadius.all(Radius.circular(20)),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CharactersDetailsScreen(
-              characterId: widget.data[widget.index].id,
+    return BlocBuilder<CharactersBloc, CharactersState>(
+      builder: (context, state) {
+        final isLiked = state.likedStatus[character.id] ?? false;
+        return InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CharactersDetailsScreen(
+                  characterId: character.id,
+                ),
+              ),
+            );
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            child: Stack(
+              children: [
+                Container(
+                  color: Colors.white,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        Image.network(character.image),
+                        IconButton(
+                          onPressed: () {
+                            context
+                                .read<CharactersBloc>()
+                                .add(CharactersLikeStatus(
+                                  characterId: character.id,
+                                  isLiked: !isLiked,
+                                ));
+                          },
+                          icon: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: SvgPicture.asset(
+                                isLiked
+                                    ? 'assets/icons/liked.svg'
+                                    : 'assets/icons/unliked.svg',
+                              )),
+                        )
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        character.name,
+                        style: TextStyle(
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
             ),
           ),
         );
       },
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-        child: Stack(
-          children: [
-            Container(
-              color: Colors.white,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  alignment: Alignment.topRight,
-                  children: [
-                    Image.network(widget.data[widget.index].image),
-                    IconButton(
-                      onPressed: toggleLike,
-                      icon: Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: SvgPicture.asset(
-                            isLiked
-                                ? 'assets/icons/liked.svg'
-                                : 'assets/icons/unliked.svg',
-                          )),
-                    )
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    widget.data[widget.index].name,
-                    style: TextStyle(
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                    ),
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
     );
   }
 }

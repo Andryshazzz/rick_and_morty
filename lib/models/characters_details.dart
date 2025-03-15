@@ -1,4 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:rick_and_morty/models/character_enum/gender.dart';
+import 'package:rick_and_morty/models/character_enum/species.dart';
+
+import 'character_enum/status.dart';
 
 part 'characters_details.g.dart';
 
@@ -6,9 +10,9 @@ part 'characters_details.g.dart';
 class Character {
   final String image;
   final String name;
-  final String status;
-  final String species;
-  final String gender;
+  final Status status;
+  final Species species;
+  final Gender gender;
   final int id;
 
   const Character({
