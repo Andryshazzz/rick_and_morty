@@ -19,4 +19,15 @@ enum Status {
         return ProjectIcons.unknown;
     }
   }
+
+  String get statusUpperCase {
+    switch (this) {
+      case Status.alive:
+        return 'Alive';
+      case Status.dead:
+        return 'Dead';
+      case Status.unknown:
+        return 'unknown';
+    }
+  }
 }

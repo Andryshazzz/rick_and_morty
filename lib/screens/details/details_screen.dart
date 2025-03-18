@@ -122,16 +122,17 @@ class _DetailInfo extends StatelessWidget {
         _RowWidget(
           icon: character.status.statusIcon,
           subTitle: 'Status',
-          mainTitle: character.status.name,
+          mainTitle: character.status.statusUpperCase,
         ),
         _RowWidget(
-            icon: character.species.speciesIcon,
-            subTitle: 'Species',
-            mainTitle: character.species.name),
+          icon: character.species.speciesIcon,
+          subTitle: 'Species',
+          mainTitle: character.species.speciesUpperCase,
+        ),
         _RowWidget(
           icon: character.gender.genderIcon,
           subTitle: 'Gender',
-          mainTitle: character.gender.name.toUpperCase(),
+          mainTitle: character.gender.genderUpperCase,
         ),
       ],
     );

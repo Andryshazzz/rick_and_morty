@@ -18,4 +18,15 @@ enum Gender {
         return ProjectIcons.unknownGender;
     }
   }
+
+  String get genderUpperCase {
+    switch (this) {
+      case Gender.male:
+        return 'Male';
+      case Gender.female:
+        return 'Female';
+      case Gender.unknown:
+        return 'unknown';
+    }
+  }
 }

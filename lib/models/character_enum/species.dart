@@ -14,4 +14,13 @@ enum Species {
         return ProjectIcons.alien;
     }
   }
+
+  String get speciesUpperCase {
+    switch (this) {
+      case Species.human:
+        return 'Human';
+      case Species.alien:
+        return 'Alien';
+    }
+  }
 }

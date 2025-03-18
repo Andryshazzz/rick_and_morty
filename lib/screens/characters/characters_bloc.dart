@@ -1,13 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../data/prefs/prefs.dart';
 import '../../repos/characters_repo.dart';
 import 'characters_event.dart';
 import 'characters_state.dart';
 
 class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
   final CharacterRepository repository;
+  final Prefs prefs;
 
   CharactersBloc({
+    required this.prefs,
     required this.repository,
   }) : super(CharactersState()) {
     on<CharactersLoadData>(_onLoadCharacter);
@@ -19,12 +22,11 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     Emitter<CharactersState> emit,
   ) async {
     final characters = await repository.getCharacters();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
     final likedStatus = <int, bool>{};
 
     for (var character in characters) {
       likedStatus[character.id] =
-          prefs.getBool('liked_${character.id}') ?? false;
+          await prefs.getLikedStatus(character.id) ?? false;
     }
 
     emit(state.copyWith(
@@ -38,9 +40,7 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     CharactersLikeStatus event,
     Emitter<CharactersState> emit,
   ) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('liked_${event.characterId}', event.isLiked);
-
+    await prefs.setLikedStatus(event.characterId, event.isLiked);
     final toggleLike = Map<int, bool>.from(state.likedStatus);
     toggleLike[event.characterId] = event.isLiked;
 
