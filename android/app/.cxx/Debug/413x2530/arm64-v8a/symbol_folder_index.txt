@@ -1,0 +1,1 @@
+/Users/andryshazzz/dev/flutter/projects/rick_and_morty/build/app/intermediates/cxx/Debug/413x2530/obj/arm64-v8a

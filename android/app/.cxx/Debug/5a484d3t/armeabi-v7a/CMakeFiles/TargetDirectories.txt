@@ -1,0 +1,2 @@
+/Users/andryshazzz/dev/flutter/projects/rick_and_morty/android/app/.cxx/Debug/5a484d3t/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/andryshazzz/dev/flutter/projects/rick_and_morty/android/app/.cxx/Debug/5a484d3t/armeabi-v7a/CMakeFiles/rebuild_cache.dir
