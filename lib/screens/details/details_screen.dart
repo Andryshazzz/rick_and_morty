@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rick_and_morty/res/icons.dart';
+import 'package:rick_and_morty/res/text_styles.dart';
 
 import '../../models/characters_details.dart';
 import '../../repos/characters_repo.dart';
@@ -76,7 +78,7 @@ class _HeaderWidget extends StatelessWidget {
           height: 260,
           child: Image.network(
             character.image,
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           ),
         ),
         Positioned(
@@ -92,7 +94,7 @@ class _HeaderWidget extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(50),
               ),
-              child: SvgPicture.asset('assets/icons/arrow-left.svg'),
+              child: SvgPicture.asset(ProjectIcons.arrowLeft),
             ),
           ),
         )
@@ -110,39 +112,26 @@ class _DetailInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = Color(0xFFF8F8F8);
     return Column(
       children: [
         _RowWidget(
-          icon: SvgPicture.asset(
-            'assets/icons/information.svg',
-            color: iconColor,
-          ),
+          icon: ProjectIcons.information,
           subTitle: 'Name',
           mainTitle: character.name,
         ),
         _RowWidget(
-          icon: SvgPicture.asset(
-            character.status.StatusIcon,
-            color: iconColor,
-          ),
+          icon: character.status.statusIcon,
           subTitle: 'Status',
           mainTitle: character.status.name,
         ),
         _RowWidget(
-            icon: SvgPicture.asset(
-              character.species.SpeciesIcon,
-              color: iconColor,
-            ),
+            icon: character.species.speciesIcon,
             subTitle: 'Species',
             mainTitle: character.species.name),
         _RowWidget(
-          icon: SvgPicture.asset(
-            character.gender.GenderIcon,
-            color: iconColor,
-          ),
+          icon: character.gender.genderIcon,
           subTitle: 'Gender',
-          mainTitle: character.gender.name,
+          mainTitle: character.gender.name.toUpperCase(),
         ),
       ],
     );
@@ -150,7 +139,7 @@ class _DetailInfo extends StatelessWidget {
 }
 
 class _RowWidget extends StatelessWidget {
-  final Widget icon;
+  final String icon;
   final String subTitle;
   final String mainTitle;
 
@@ -162,6 +151,7 @@ class _RowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconColor = Color(0xFFF8F8F8);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: Row(
@@ -172,27 +162,22 @@ class _RowWidget extends StatelessWidget {
               color: Color(0xFF11B0C8),
               borderRadius: BorderRadius.circular(50),
             ),
-            child: icon,
+            child: SvgPicture.asset(
+              icon,
+              color: iconColor,
+            ),
           ),
           SizedBox(width: 20),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(subTitle,
-                  style: TextStyle(
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    color: Color(0xFF808080),
-                  )),
+              Text(
+                subTitle,
+                style: ProjectTextStyles.bodyMedium,
+              ),
               Text(
                 mainTitle,
-                style: TextStyle(
-                  fontFamily: 'Lato',
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                  color: Color(0xFF1F1F1F),
-                ),
+                style: ProjectTextStyles.subtitle,
               ),
             ],
           )

@@ -1,16 +1,21 @@
+import 'package:json_annotation/json_annotation.dart';
+import 'package:rick_and_morty/res/icons.dart';
+
+@JsonEnum(fieldRename: FieldRename.pascal)
 enum Gender {
-  Male,
-  Female,
+  male,
+  female,
+  @JsonValue('unknown')
   unknown;
 
-  String get GenderIcon {
+  String get genderIcon {
     switch (this) {
-      case Gender.Male:
-        return 'assets/icons/male.svg';
-      case Gender.Female:
-        return 'assets/icons/female.svg';
+      case Gender.male:
+        return ProjectIcons.male;
+      case Gender.female:
+        return ProjectIcons.female;
       case Gender.unknown:
-        return 'assets/icons/unknown_gender.svg';
+        return ProjectIcons.unknownGender;
     }
   }
 }

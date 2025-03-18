@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rick_and_morty/res/icons.dart';
 import '../../models/characters_details.dart';
 import '../../repos/characters_repo.dart';
+import '../../res/text_styles.dart';
 import 'characters_bloc.dart';
 import '../details/details_screen.dart';
 import 'characters_event.dart';
@@ -138,8 +140,8 @@ class CharacterCard extends StatelessWidget {
                               ),
                               child: SvgPicture.asset(
                                 isLiked
-                                    ? 'assets/icons/liked.svg'
-                                    : 'assets/icons/unliked.svg',
+                                    ? ProjectIcons.liked
+                                    : ProjectIcons.unLiked,
                               )),
                         )
                       ],
@@ -148,11 +150,7 @@ class CharacterCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
                         character.name,
-                        style: TextStyle(
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                        ),
+                        style: ProjectTextStyles.bodyBold,
                       ),
                     )
                   ],

@@ -25,18 +25,18 @@ Map<String, dynamic> _$CharacterToJson(Character instance) => <String, dynamic>{
     };
 
 const _$StatusEnumMap = {
-  Status.Alive: 'Alive',
-  Status.Dead: 'Dead',
+  Status.alive: 'Alive',
+  Status.dead: 'Dead',
   Status.unknown: 'unknown',
 };
 
 const _$SpeciesEnumMap = {
-  Species.Human: 'Human',
-  Species.Alien: 'Alien',
+  Species.human: 'Human',
+  Species.alien: 'Alien',
 };
 
 const _$GenderEnumMap = {
-  Gender.Male: 'Male',
-  Gender.Female: 'Female',
+  Gender.male: 'Male',
+  Gender.female: 'Female',
   Gender.unknown: 'unknown',
 };

@@ -1,16 +1,22 @@
+import 'package:json_annotation/json_annotation.dart';
+
+import '../../res/icons.dart';
+
+@JsonEnum(fieldRename: FieldRename.pascal)
 enum Status {
-  Alive,
-  Dead,
+  alive,
+  dead,
+  @JsonValue('unknown')
   unknown;
 
-  String get StatusIcon {
+  String get statusIcon {
     switch (this) {
-      case Status.Alive:
-        return 'assets/icons/alive.svg';
-      case Status.Dead:
-        return 'assets/icons/dead.svg';
+      case Status.alive:
+        return ProjectIcons.alive;
+      case Status.dead:
+        return ProjectIcons.dead;
       case Status.unknown:
-        return 'assets/icons/unknown.svg';
+        return ProjectIcons.unknown;
     }
   }
 }
