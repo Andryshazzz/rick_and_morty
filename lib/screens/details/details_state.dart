@@ -10,11 +10,11 @@ class CharactersDetailsState {
   });
 
   CharactersDetailsState copyWith({
-    bool? isLoadig,
+    bool? isLoading,
     Character? character,
   }) {
     return CharactersDetailsState(
-      isLoading: isLoadig ?? this.isLoading,
+      isLoading: isLoading ?? this.isLoading,
       character: character ?? this.character,
     );
   }

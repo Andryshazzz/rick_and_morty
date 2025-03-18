@@ -18,7 +18,7 @@ class CharactersDetailsBloc
         .getCharactersDetails(event.characterId);
     emit(state.copyWith(
       character: character,
-      isLoadig: false,
+      isLoading: false,
     ));
   }
 }
