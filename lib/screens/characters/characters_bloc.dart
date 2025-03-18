@@ -1,17 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get_it/get_it.dart';
 import '../../data/prefs/prefs.dart';
 import '../../repos/characters_repo.dart';
 import 'characters_event.dart';
 import 'characters_state.dart';
 
 class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
-  final CharacterRepository repository;
   final Prefs prefs;
 
   CharactersBloc({
     required this.prefs,
-    required this.repository,
   }) : super(CharactersState()) {
     on<CharactersLoadData>(_onLoadCharacter);
     on<CharactersLikeStatus>(_onToggleLikeStatus);
@@ -21,7 +19,7 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     CharactersLoadData event,
     Emitter<CharactersState> emit,
   ) async {
-    final characters = await repository.getCharacters();
+    final characters = await GetIt.I<CharacterRepository>().getCharacters();
     final likedStatus = <int, bool>{};
 
     for (var character in characters) {

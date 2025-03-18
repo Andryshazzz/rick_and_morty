@@ -4,7 +4,11 @@ import '../data/api/characters_response.dart';
 import '../models/characters_details.dart';
 
 class CharacterRepository {
-  final apiClient = ApiClient();
+  final ApiClient apiClient;
+
+  CharacterRepository({
+    required this.apiClient,
+  });
 
   Future<List<Character>> getCharacters() async {
     final request = await apiClient.get('/character');
@@ -13,8 +17,7 @@ class CharacterRepository {
   }
 
   Future<Character> getCharactersDetails(int characterId) async {
-    final request =
-        await apiClient.get('/character/$characterId');
+    final request = await apiClient.get('/character/$characterId');
     final response = Character.fromJson(request.data);
     return response;
   }

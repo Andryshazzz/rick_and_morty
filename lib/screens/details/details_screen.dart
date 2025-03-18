@@ -5,7 +5,6 @@ import 'package:rick_and_morty/res/icons.dart';
 import 'package:rick_and_morty/res/text_styles.dart';
 
 import '../../models/characters_details.dart';
-import '../../repos/characters_repo.dart';
 import 'details_bloc.dart';
 import 'details_event.dart';
 import 'details_state.dart';
@@ -22,8 +21,7 @@ class CharactersDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<CharactersDetailsBloc>(
       create: (context) {
-        final repository = context.read<CharacterRepository>();
-        return CharactersDetailsBloc(repository: repository)
+        return CharactersDetailsBloc()
           ..add(CharactersDetailsLoadData(characterId: characterId));
       },
       child: _CharactersDetailsScreen(characterId: characterId),

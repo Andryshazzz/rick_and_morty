@@ -14,7 +14,7 @@ dependencies:
   json_annotation: 4.9.0
   flutter_svg: ^2.0.17
   shared_preferences: ^2.5.2
-  provider: ^6.1.2
+  get_it: ^8.0.3
 
   cupertino_icons: ^1.0.8
 
