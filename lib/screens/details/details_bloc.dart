@@ -6,7 +6,11 @@ import 'details_state.dart';
 
 class CharactersDetailsBloc
     extends Bloc<CharactersDetailsEvent, CharactersDetailsState> {
-  CharactersDetailsBloc() : super(CharactersDetailsState()) {
+  final CharacterRepository repository;
+
+  CharactersDetailsBloc({
+    required this.repository,
+  }) : super(CharactersDetailsState()) {
     on<CharactersDetailsLoadData>(_onLoadCharacterDetails);
   }
 
@@ -14,8 +18,7 @@ class CharactersDetailsBloc
     CharactersDetailsLoadData event,
     Emitter<CharactersDetailsState> emit,
   ) async {
-    final character = await GetIt.I<CharacterRepository>()
-        .getCharactersDetails(event.characterId);
+    final character = await repository.getCharactersDetails(event.characterId);
     emit(state.copyWith(
       character: character,
       isLoading: false,

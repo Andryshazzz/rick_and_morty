@@ -15,6 +15,7 @@ dependencies:
   flutter_svg: ^2.0.17
   shared_preferences: ^2.5.2
   get_it: ^8.0.3
+  injectable: ^2.5.0
 
   cupertino_icons: ^1.0.8
 
@@ -23,6 +24,7 @@ dev_dependencies:
     sdk: flutter
   json_serializable: ^6.9.4
   build_runner: 2.4.15
+  injectable_generator:
 
   flutter_lints: ^5.0.0
 

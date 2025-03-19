@@ -7,9 +7,11 @@ import 'characters_state.dart';
 
 class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
   final Prefs prefs;
+  final CharacterRepository repository;
 
   CharactersBloc({
     required this.prefs,
+    required this.repository,
   }) : super(CharactersState()) {
     on<CharactersLoadData>(_onLoadCharacter);
     on<CharactersLikeStatus>(_onToggleLikeStatus);
@@ -19,7 +21,7 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     CharactersLoadData event,
     Emitter<CharactersState> emit,
   ) async {
-    final characters = await GetIt.I<CharacterRepository>().getCharacters();
+    final characters = await repository.getCharacters();
     final likedStatus = <int, bool>{};
 
     for (var character in characters) {

@@ -1,8 +1,10 @@
+import 'package:injectable/injectable.dart';
 import 'package:rick_and_morty/data/api/api_client.dart';
 
 import '../data/api/characters_response.dart';
 import '../models/characters_details.dart';
 
+@singleton
 class CharacterRepository {
   final ApiClient apiClient;
 

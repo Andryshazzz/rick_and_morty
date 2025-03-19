@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rick_and_morty/repos/characters_repo.dart';
 import 'package:rick_and_morty/res/icons.dart';
 import '../../data/prefs/prefs.dart';
 import '../../models/characters_details.dart';
@@ -21,6 +22,7 @@ class CharactersScreen extends StatelessWidget {
       create: (context) {
         return CharactersBloc(
           prefs: GetIt.I<Prefs>(),
+          repository: GetIt.I<CharacterRepository>(),
         )..add(CharactersLoadData());
       },
       child: const _CharactersScreen(),

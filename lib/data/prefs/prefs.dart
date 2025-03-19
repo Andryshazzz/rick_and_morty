@@ -1,5 +1,7 @@
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@singleton
 class Prefs {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 

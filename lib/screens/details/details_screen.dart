@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it/get_it.dart';
+import 'package:rick_and_morty/repos/characters_repo.dart';
 import 'package:rick_and_morty/res/icons.dart';
 import 'package:rick_and_morty/res/text_styles.dart';
 
@@ -21,8 +23,9 @@ class CharactersDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<CharactersDetailsBloc>(
       create: (context) {
-        return CharactersDetailsBloc()
-          ..add(CharactersDetailsLoadData(characterId: characterId));
+        return CharactersDetailsBloc(
+          repository: GetIt.I<CharacterRepository>(),
+        )..add(CharactersDetailsLoadData(characterId: characterId));
       },
       child: _CharactersDetailsScreen(characterId: characterId),
     );

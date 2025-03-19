@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/screens/characters/characters_screen.dart';
 
-import 'dependency.dart';
+import 'dependencies.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ConfigDependency.configure();
+  configureDependencies();
 
   runApp(
     MaterialApp(
