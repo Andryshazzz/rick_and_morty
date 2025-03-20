@@ -1,10 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
 import '../../data/prefs/prefs.dart';
 import '../../repos/characters_repo.dart';
 import 'characters_event.dart';
 import 'characters_state.dart';
 
+@injectable
 class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
   final Prefs prefs;
   final CharacterRepository repository;

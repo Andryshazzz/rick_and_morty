@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -117,22 +118,22 @@ class _DetailInfo extends StatelessWidget {
       children: [
         _RowWidget(
           icon: ProjectIcons.information,
-          subTitle: 'Name',
+          subTitle: 'name'.tr(),
           mainTitle: character.name,
         ),
         _RowWidget(
           icon: character.status.statusIcon,
-          subTitle: 'Status',
+          subTitle: 'status'.tr(),
           mainTitle: character.status.statusUpperCase,
         ),
         _RowWidget(
           icon: character.species.speciesIcon,
-          subTitle: 'Species',
+          subTitle: 'species'.tr(),
           mainTitle: character.species.speciesUpperCase,
         ),
         _RowWidget(
           icon: character.gender.genderIcon,
-          subTitle: 'Gender',
+          subTitle: 'gender'.tr(),
           mainTitle: character.gender.genderUpperCase,
         ),
       ],
