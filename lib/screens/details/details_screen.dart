@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
-import 'package:rick_and_morty/repos/characters_repo.dart';
+
 import 'package:rick_and_morty/res/icons.dart';
 import 'package:rick_and_morty/res/text_styles.dart';
 
+import '../../generated/locale_keys.g.dart';
 import '../../models/characters_details.dart';
 import 'details_bloc.dart';
 import 'details_event.dart';
@@ -24,21 +25,18 @@ class CharactersDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<CharactersDetailsBloc>(
       create: (context) {
-        return CharactersDetailsBloc(
-          repository: GetIt.I<CharacterRepository>(),
-        )..add(CharactersDetailsLoadData(characterId: characterId));
+        return GetIt.I<CharactersDetailsBloc>(param1: characterId)
+          ..add(
+            CharactersDetailsLoadData(),
+          );
       },
-      child: _CharactersDetailsScreen(characterId: characterId),
+      child: _CharactersDetailsScreen(),
     );
   }
 }
 
 class _CharactersDetailsScreen extends StatelessWidget {
-  final int characterId;
-
-  const _CharactersDetailsScreen({
-    required this.characterId,
-  });
+  const _CharactersDetailsScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -118,22 +116,22 @@ class _DetailInfo extends StatelessWidget {
       children: [
         _RowWidget(
           icon: ProjectIcons.information,
-          subTitle: 'name'.tr(),
+          subTitle: LocaleKeys.name.tr(),
           mainTitle: character.name,
         ),
         _RowWidget(
           icon: character.status.statusIcon,
-          subTitle: 'status'.tr(),
+          subTitle: LocaleKeys.status.tr(),
           mainTitle: character.status.statusUpperCase,
         ),
         _RowWidget(
           icon: character.species.speciesIcon,
-          subTitle: 'species'.tr(),
+          subTitle: LocaleKeys.species.tr(),
           mainTitle: character.species.speciesUpperCase,
         ),
         _RowWidget(
           icon: character.gender.genderIcon,
-          subTitle: 'gender'.tr(),
+          subTitle: LocaleKeys.gender.tr(),
           mainTitle: character.gender.genderUpperCase,
         ),
       ],
