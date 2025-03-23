@@ -33,6 +33,11 @@ const _$StatusEnumMap = {
 const _$SpeciesEnumMap = {
   Species.human: 'Human',
   Species.alien: 'Alien',
+  Species.humanoid: 'Humanoid',
+  Species.unknown: 'unknown',
+  Species.mythologicalcreature: 'Mythological Creature',
+  Species.poopybutthole: 'Poopybutthole',
+  Species.animal: 'Animal',
 };
 
 const _$GenderEnumMap = {

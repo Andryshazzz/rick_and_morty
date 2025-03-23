@@ -12,8 +12,8 @@ class CharacterRepository {
     required this.apiClient,
   });
 
-  Future<List<Character>> getCharacters() async {
-    final request = await apiClient.get('/character');
+  Future<List<Character>> getCharacters(int page) async {
+    final request = await apiClient.get('/character', query: {'page': page});
     final response = CharactersResponse.fromJson(request.data).results.toList();
     return response;
   }

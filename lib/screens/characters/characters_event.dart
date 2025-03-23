@@ -2,6 +2,8 @@ abstract class CharactersEvent {}
 
 class CharactersLoadData extends CharactersEvent {}
 
+class CharactersLoadMoreData extends CharactersEvent {}
+
 class CharactersLikeStatus extends CharactersEvent {
   final int characterId;
   final bool isLiked;

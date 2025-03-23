@@ -15,6 +15,7 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     required this.repository,
   }) : super(CharactersState()) {
     on<CharactersLoadData>(_onLoadCharacter);
+    on<CharactersLoadMoreData>(_onLoadMoreCharacter);
     on<CharactersLikeStatus>(_onToggleLikeStatus);
   }
 
@@ -22,7 +23,7 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     CharactersLoadData event,
     Emitter<CharactersState> emit,
   ) async {
-    final characters = await repository.getCharacters();
+    final characters = await repository.getCharacters(state.currentPage);
     final likedStatus = <int, bool>{};
 
     for (var character in characters) {
@@ -48,5 +49,29 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     emit(state.copyWith(
       likedStatus: toggleLike,
     ));
+  }
+
+  Future<void> _onLoadMoreCharacter(
+    CharactersLoadMoreData event,
+    Emitter<CharactersState> emit,
+  ) async {
+    emit(state.copyWith(isLoadingMore: state.isLoadingMore = true));
+
+    final currentPage = state.currentPage += 1;
+    final newCharacters = await repository.getCharacters(currentPage + 1);
+
+    final likedStatus = <int, bool>{};
+    for (var character in newCharacters) {
+      likedStatus[character.id] =
+          await prefs.getLikedStatus(character.id) ?? false;
+    }
+
+    emit(
+      state.copyWith(
+        isLoadingMore: false,
+        characters: [...state.characters, ...newCharacters],
+        likedStatus: {...state.likedStatus, ...likedStatus},
+      ),
+    );
   }
 }

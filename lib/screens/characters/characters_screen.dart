@@ -34,44 +34,76 @@ class _CharactersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(0),
-        child: AppBar(),
-      ),
-      body: BlocBuilder<CharactersBloc, CharactersState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state.characters.isEmpty) {
-            return const Text('ой-ой');
-          }
-          return _CharactersList(characters: state.characters);
-        },
+      body: SafeArea(
+        child: BlocBuilder<CharactersBloc, CharactersState>(
+          builder: (context, state) {
+            if (state.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state.characters.isEmpty) {
+              return const Text('ой-ой');
+            }
+            return _CharactersList(
+              characters: state.characters,
+              isLoadingMore: state.isLoadingMore,
+            );
+          },
+        ),
       ),
     );
   }
 }
 
-class _CharactersList extends StatelessWidget {
+class _CharactersList extends StatefulWidget {
   final List<Character> characters;
+  final bool isLoadingMore;
 
   const _CharactersList({
     required this.characters,
+    required this.isLoadingMore,
   });
+
+  @override
+  State<_CharactersList> createState() => _CharactersListState();
+}
+
+class _CharactersListState extends State<_CharactersList> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    _scrollController.addListener(
+      () async {
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          context.read<CharactersBloc>().add(
+                CharactersLoadMoreData(),
+              );
+        }
+      },
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      controller: _scrollController,
       slivers: [
         SliverPadding(
           padding: EdgeInsets.all(20),
           sliver: SliverGrid(
             delegate: SliverChildBuilderDelegate(
               (context, index) => CharacterCard(
-                character: characters[index],
+                character: widget.characters[index],
               ),
-              childCount: 8,
+              childCount: widget.characters.length,
             ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -81,6 +113,15 @@ class _CharactersList extends StatelessWidget {
             ),
           ),
         ),
+        if (widget.isLoadingMore)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          ),
       ],
     );
   }
