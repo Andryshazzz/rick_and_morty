@@ -5,6 +5,7 @@ import 'package:rick_and_morty/res/icons.dart';
 enum Gender {
   male,
   female,
+  genderless,
   @JsonValue('unknown')
   unknown;
 
@@ -14,6 +15,8 @@ enum Gender {
         return ProjectIcons.male;
       case Gender.female:
         return ProjectIcons.female;
+      case Gender.genderless:
+        return ProjectIcons.unknownGender;
       case Gender.unknown:
         return ProjectIcons.unknownGender;
     }
@@ -25,6 +28,8 @@ enum Gender {
         return 'Male';
       case Gender.female:
         return 'Female';
+      case Gender.genderless:
+        return 'unknown';
       case Gender.unknown:
         return 'unknown';
     }

@@ -10,7 +10,7 @@ Character _$CharacterFromJson(Map<String, dynamic> json) => Character(
       image: json['image'] as String,
       name: json['name'] as String,
       status: $enumDecode(_$StatusEnumMap, json['status']),
-      species: $enumDecode(_$SpeciesEnumMap, json['species']),
+      species: const SpeciesConverter().fromJson(json['species'] as String),
       gender: $enumDecode(_$GenderEnumMap, json['gender']),
       id: (json['id'] as num).toInt(),
     );
@@ -19,7 +19,7 @@ Map<String, dynamic> _$CharacterToJson(Character instance) => <String, dynamic>{
       'image': instance.image,
       'name': instance.name,
       'status': _$StatusEnumMap[instance.status]!,
-      'species': _$SpeciesEnumMap[instance.species]!,
+      'species': const SpeciesConverter().toJson(instance.species),
       'gender': _$GenderEnumMap[instance.gender]!,
       'id': instance.id,
     };
@@ -30,18 +30,9 @@ const _$StatusEnumMap = {
   Status.unknown: 'unknown',
 };
 
-const _$SpeciesEnumMap = {
-  Species.human: 'Human',
-  Species.alien: 'Alien',
-  Species.humanoid: 'Humanoid',
-  Species.unknown: 'unknown',
-  Species.mythologicalcreature: 'Mythological Creature',
-  Species.poopybutthole: 'Poopybutthole',
-  Species.animal: 'Animal',
-};
-
 const _$GenderEnumMap = {
   Gender.male: 'Male',
   Gender.female: 'Female',
+  Gender.genderless: 'Genderless',
   Gender.unknown: 'unknown',
 };

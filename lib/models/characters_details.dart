@@ -11,6 +11,7 @@ class Character {
   final String image;
   final String name;
   final Status status;
+  @SpeciesConverter()
   final Species species;
   final Gender gender;
   final int id;
@@ -26,4 +27,25 @@ class Character {
 
   factory Character.fromJson(Map<String, Object?> json) =>
       _$CharacterFromJson(json);
+}
+
+class SpeciesConverter implements JsonConverter<Species, String> {
+  const SpeciesConverter();
+
+  @override
+  Species fromJson(String json) {
+    switch (json) {
+      case 'Human':
+        return Species.human;
+      case 'Alien':
+        return Species.alien;
+      default:
+        return Species.unknown;
+    }
+  }
+
+  @override
+  String toJson(Species object) {
+    return object.name;
+  }
 }

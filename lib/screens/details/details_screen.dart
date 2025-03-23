@@ -169,18 +169,21 @@ class _RowWidget extends StatelessWidget {
             ),
           ),
           SizedBox(width: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                subTitle,
-                style: ProjectTextStyles.bodyMedium,
-              ),
-              Text(
-                mainTitle,
-                style: ProjectTextStyles.subtitle,
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  subTitle,
+                  style: ProjectTextStyles.bodyMedium,
+                ),
+                Text(
+                  mainTitle,
+                  overflow: TextOverflow.ellipsis,
+                  style: ProjectTextStyles.subtitle,
+                ),
+              ],
+            ),
           )
         ],
       ),

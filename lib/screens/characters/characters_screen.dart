@@ -193,6 +193,8 @@ class CharacterCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
                         character.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: ProjectTextStyles.bodyBold,
                       ),
                     )
