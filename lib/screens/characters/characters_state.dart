@@ -1,11 +1,11 @@
-import '../../models/characters_details.dart';
+import '../../models/characters.dart';
 
 class CharactersState {
   final bool isLoading;
-  bool isLoadingMore;
+  final bool isLoadingMore;
   final List<Character> characters;
   final Map<int, bool> likedStatus;
-  int currentPage;
+  final int currentPage;
 
   CharactersState({
     this.currentPage = 0,

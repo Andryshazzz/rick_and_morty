@@ -1,26 +1,32 @@
 import 'package:injectable/injectable.dart';
 import 'package:rick_and_morty/data/api/api_client.dart';
 
-import '../data/api/characters_response.dart';
-import '../models/characters_details.dart';
+import '../data/prefs/prefs.dart';
+import '../models/characters.dart';
 
 @singleton
 class CharacterRepository {
   final ApiClient apiClient;
+  final Prefs prefs;
 
   CharacterRepository({
     required this.apiClient,
+    required this.prefs,
   });
 
   Future<List<Character>> getCharacters(int page) async {
-    final request = await apiClient.get('/character', query: {'page': page});
-    final response = CharactersResponse.fromJson(request.data).results.toList();
-    return response;
+    return apiClient.getCharacters(page);
   }
 
   Future<Character> getCharactersDetails(int characterId) async {
-    final request = await apiClient.get('/character/$characterId');
-    final response = Character.fromJson(request.data);
-    return response;
+    return apiClient.getCharactersDetails(characterId);
+  }
+
+  Future<bool?> getLikedStatus(int characterId) async {
+    return prefs.getLikedStatus(characterId);
+  }
+
+  Future<void> setLikedStatus(int characterId, bool isLiked) async {
+    return prefs.setLikedStatus(characterId, isLiked);
   }
 }

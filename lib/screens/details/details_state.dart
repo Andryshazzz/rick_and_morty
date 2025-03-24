@@ -1,4 +1,6 @@
-import '../../models/characters_details.dart';
+
+
+import '../../models/characters.dart';
 
 class CharactersDetailsState {
   final bool isLoading;

@@ -1,17 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import '../../data/prefs/prefs.dart';
 import '../../repos/characters_repo.dart';
 import 'characters_event.dart';
 import 'characters_state.dart';
 
 @injectable
 class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
-  final Prefs prefs;
   final CharacterRepository repository;
 
   CharactersBloc({
-    required this.prefs,
     required this.repository,
   }) : super(CharactersState()) {
     on<CharactersLoadData>(_onLoadCharacter);
@@ -28,7 +25,7 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
 
     for (var character in characters) {
       likedStatus[character.id] =
-          await prefs.getLikedStatus(character.id) ?? false;
+          await repository.getLikedStatus(character.id) ?? false;
     }
 
     emit(state.copyWith(
@@ -42,7 +39,7 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     CharactersLikeStatus event,
     Emitter<CharactersState> emit,
   ) async {
-    await prefs.setLikedStatus(event.characterId, event.isLiked);
+    await repository.setLikedStatus(event.characterId, event.isLiked);
     final toggleLike = Map<int, bool>.from(state.likedStatus);
     toggleLike[event.characterId] = event.isLiked;
 
@@ -55,21 +52,22 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     CharactersLoadMoreData event,
     Emitter<CharactersState> emit,
   ) async {
-    emit(state.copyWith(isLoadingMore: state.isLoadingMore = true));
+    emit(state.copyWith(isLoadingMore: true));
 
-    final currentPage = state.currentPage += 1;
-    final newCharacters = await repository.getCharacters(currentPage + 1);
+    final currentPage = state.currentPage + 1;
+    final pageCharacters = await repository.getCharacters(currentPage + 1);
 
     final likedStatus = <int, bool>{};
-    for (var character in newCharacters) {
+    for (var character in pageCharacters) {
       likedStatus[character.id] =
-          await prefs.getLikedStatus(character.id) ?? false;
+          await repository.getLikedStatus(character.id) ?? false;
     }
 
     emit(
       state.copyWith(
+        currentPage: currentPage,
         isLoadingMore: false,
-        characters: [...state.characters, ...newCharacters],
+        characters: [...state.characters, ...pageCharacters],
         likedStatus: {...state.likedStatus, ...likedStatus},
       ),
     );

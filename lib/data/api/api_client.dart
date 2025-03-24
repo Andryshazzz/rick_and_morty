@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../models/characters.dart';
+import 'characters_response.dart';
+
 @singleton
 class ApiClient {
   final _dio = Dio();
@@ -19,18 +22,16 @@ class ApiClient {
       ..sendTimeout = const Duration(seconds: 30);
   }
 
-  Future<Response<T>> get<T>(
-    String url, {
-    Map<String, dynamic>? query,
-    Map<String, String>? headers,
-    Duration? receiveTimeout,
-  }) async {
-    final response = await _dio.get<T>(
-      url,
-      queryParameters: query,
-      options: Options(headers: headers, receiveTimeout: receiveTimeout),
-    );
+  Future<Character> getCharactersDetails(int characterId) async {
+    final request = await _dio.get('/character/$characterId');
+    final response = Character.fromJson(request.data);
+    return response;
+  }
 
+  Future<List<Character>> getCharacters(int page) async {
+    final request =
+        await _dio.get('/character', queryParameters: {'page': page});
+    final response = CharactersResponse.fromJson(request.data).results.toList();
     return response;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../models/characters_details.dart';
+import '../../models/characters.dart';
+
 
 part 'characters_response.g.dart';
 

@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rick_and_morty/res/icons.dart';
-import '../../models/characters_details.dart';
 
+import '../../models/characters.dart';
+import '../../res/colors.dart';
 import '../../res/text_styles.dart';
 import 'characters_bloc.dart';
 import '../details/details_screen.dart';
@@ -74,8 +75,8 @@ class _CharactersListState extends State<_CharactersList> {
   void initState() {
     _scrollController.addListener(
       () async {
-        if (_scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent) {
+        if (_scrollController.position.pixels >
+            _scrollController.position.maxScrollExtent - 200) {
           context.read<CharactersBloc>().add(
                 CharactersLoadMoreData(),
               );
@@ -157,7 +158,7 @@ class CharacterCard extends StatelessWidget {
             child: Stack(
               children: [
                 Container(
-                  color: Colors.white,
+                  color: ProjectColors.white,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,7 +179,7 @@ class CharacterCard extends StatelessWidget {
                           icon: Container(
                               padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: ProjectColors.white,
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child: SvgPicture.asset(

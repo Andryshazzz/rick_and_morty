@@ -8,7 +8,8 @@ import 'package:rick_and_morty/res/icons.dart';
 import 'package:rick_and_morty/res/text_styles.dart';
 
 import '../../generated/locale_keys.g.dart';
-import '../../models/characters_details.dart';
+import '../../models/characters.dart';
+import '../../res/colors.dart';
 import 'details_bloc.dart';
 import 'details_event.dart';
 import 'details_state.dart';
@@ -91,7 +92,7 @@ class _HeaderWidget extends StatelessWidget {
             icon: Container(
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: ProjectColors.white,
                 borderRadius: BorderRadius.circular(50),
               ),
               child: SvgPicture.asset(ProjectIcons.arrowLeft),
@@ -152,7 +153,6 @@ class _RowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = Color(0xFFF8F8F8);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: Row(
@@ -160,12 +160,12 @@ class _RowWidget extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Color(0xFF11B0C8),
+              color: ProjectColors.irisBlue,
               borderRadius: BorderRadius.circular(50),
             ),
             child: SvgPicture.asset(
               icon,
-              color: iconColor,
+              color: ProjectColors.whiteSmoke,
             ),
           ),
           SizedBox(width: 20),

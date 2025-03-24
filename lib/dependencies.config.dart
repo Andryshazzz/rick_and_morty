@@ -31,11 +31,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i582.Prefs>(() => _i582.Prefs());
     gh.singleton<_i783.ApiClient>(() => _i783.ApiClient());
-    gh.singleton<_i976.CharacterRepository>(
-        () => _i976.CharacterRepository(apiClient: gh<_i783.ApiClient>()));
-    gh.factory<_i324.CharactersBloc>(() => _i324.CharactersBloc(
+    gh.singleton<_i976.CharacterRepository>(() => _i976.CharacterRepository(
+          apiClient: gh<_i783.ApiClient>(),
           prefs: gh<_i582.Prefs>(),
-          repository: gh<_i976.CharacterRepository>(),
         ));
     gh.factoryParam<_i22.CharactersDetailsBloc, int, dynamic>((
       characterId,
@@ -45,6 +43,8 @@ extension GetItInjectableX on _i174.GetIt {
           repository: gh<_i976.CharacterRepository>(),
           characterId: characterId,
         ));
+    gh.factory<_i324.CharactersBloc>(() =>
+        _i324.CharactersBloc(repository: gh<_i976.CharacterRepository>()));
     return this;
   }
 }
