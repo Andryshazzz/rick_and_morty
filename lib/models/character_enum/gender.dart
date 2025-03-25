@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:rick_and_morty/res/icons.dart';
+import '../../res/icons.dart';
 
 @JsonEnum(fieldRename: FieldRename.pascal)
 enum Gender {

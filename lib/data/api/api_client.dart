@@ -6,14 +6,14 @@ import 'characters_response.dart';
 
 @singleton
 class ApiClient {
-  final _dio = Dio();
-
   ApiClient() {
     _initDio();
   }
 
-  _initDio() async {
-    String apiUrl = 'https://rickandmortyapi.com/api';
+  final _dio = Dio();
+
+  Future<void> _initDio() async {
+    const apiUrl = 'https://rickandmortyapi.com/api';
 
     _dio.options
       ..baseUrl = apiUrl

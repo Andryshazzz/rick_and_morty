@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:rick_and_morty/models/character_enum/gender.dart';
-import 'package:rick_and_morty/models/character_enum/species.dart';
 
+import 'character_enum/gender.dart';
+import 'character_enum/species.dart';
 import 'character_enum/status.dart';
 
 part 'characters.g.dart';

@@ -23,7 +23,7 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     final characters = await repository.getCharacters(state.currentPage);
     final likedStatus = <int, bool>{};
 
-    for (var character in characters) {
+    for (final character in characters) {
       likedStatus[character.id] =
           await repository.getLikedStatus(character.id) ?? false;
     }
@@ -58,7 +58,7 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
     final pageCharacters = await repository.getCharacters(currentPage + 1);
 
     final likedStatus = <int, bool>{};
-    for (var character in pageCharacters) {
+    for (final character in pageCharacters) {
       likedStatus[character.id] =
           await repository.getLikedStatus(character.id) ?? false;
     }

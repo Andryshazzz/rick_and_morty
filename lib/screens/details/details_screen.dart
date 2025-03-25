@@ -4,23 +4,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:rick_and_morty/res/icons.dart';
-import 'package:rick_and_morty/res/text_styles.dart';
-
 import '../../generated/locale_keys.g.dart';
 import '../../models/characters.dart';
 import '../../res/colors.dart';
+import '../../res/icons.dart';
+import '../../res/text_styles.dart';
 import 'details_bloc.dart';
 import 'details_event.dart';
 import 'details_state.dart';
 
 class CharactersDetailsScreen extends StatelessWidget {
-  final int characterId;
-
   const CharactersDetailsScreen({
     super.key,
     required this.characterId,
   });
+
+  final int characterId;
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +63,11 @@ class _CharactersDetailsScreen extends StatelessWidget {
 }
 
 class _HeaderWidget extends StatelessWidget {
-  final Character character;
-
   const _HeaderWidget({
     required this.character,
   });
+
+  final Character character;
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +104,11 @@ class _HeaderWidget extends StatelessWidget {
 }
 
 class _DetailInfo extends StatelessWidget {
-  final Character character;
-
   const _DetailInfo({
     required this.character,
   });
+
+  final Character character;
 
   @override
   Widget build(BuildContext context) {
@@ -141,15 +140,15 @@ class _DetailInfo extends StatelessWidget {
 }
 
 class _RowWidget extends StatelessWidget {
-  final String icon;
-  final String subTitle;
-  final String mainTitle;
-
   const _RowWidget({
     required this.icon,
     required this.subTitle,
     required this.mainTitle,
   });
+
+  final String icon;
+  final String subTitle;
+  final String mainTitle;
 
   @override
   Widget build(BuildContext context) {
